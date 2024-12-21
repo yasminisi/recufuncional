@@ -1,6 +1,6 @@
 import Data.Data (Data)
-import Text.Show.Functions () 
- 
+import Text.Show.Functions ()
+
 data Aventurero = UnAventurero{
     nombre :: String,
     carga :: Int,
@@ -29,7 +29,7 @@ valiente unAventurero = coraje unAventurero || ((>100) . salud) unAventurero
 
 type Carga = Int
 ligthpacker :: Carga -> Aventurero -> Bool
-ligthpacker unaCargaParticular unAventurero = ((>unaCargaParticular) . carga) unAventurero   
+ligthpacker unaCargaParticular = (>unaCargaParticular) . carga
 
 pepita = UnAventurero "pepita" 30 100 False [conformista, valiente]
 jose = UnAventurero "jose" 41 200 True [conformista]
@@ -38,16 +38,16 @@ jose = UnAventurero "jose" 41 200 True [conformista]
 -- punto 2
 type Condicion = Aventurero -> Bool
 existeAlgunAventureroQue ::[Aventurero] -> Bool
-existeAlgunAventureroQue unosAventureros = any tieneNombreMas5Letras unosAventureros
+existeAlgunAventureroQue = any tieneNombreMas5Letras
 
 tieneNombreMas5Letras :: Aventurero -> Bool
-tieneNombreMas5Letras unAventurero =  (>5). length . nombre $ unAventurero
+tieneNombreMas5Letras = (>5). length . nombre
 
 cargaTotalSegun :: [Aventurero] -> Int
-cargaTotalSegun unosAventureros = sum . map carga . filter tieneCargaPar $ unosAventureros
+cargaTotalSegun = sum . map carga . filter tieneCargaPar
 
 tieneCargaPar :: Aventurero -> Bool
-tieneCargaPar unAventurero = even . carga $ unAventurero
+tieneCargaPar = even . carga
 
 
 --punto 3
@@ -60,7 +60,7 @@ inspirador :: Encuentro
 inspirador unAventurero = modificarSalud (+(10 * salud unAventurero `div` 100)). modificarCoraje (const True) $ unAventurero
 
 embaucador :: Encuentro
-embaucador unAventurero = modificarCriterio ((ligthpacker 10) :). modificarSalud (`div` 2) . modificarCarga ((+10).subtract 1) . modificarCoraje (const False) $ unAventurero
+embaucador = modificarCriterio (ligthpacker 10 :). modificarSalud (`div` 2) . modificarCarga ((+10).subtract 1) . modificarCoraje (const False)
 
 modificarCriterio :: ([Criterio] -> [Criterio]) -> Aventurero -> Aventurero
 modificarCriterio unaFuncion unAventurero = unAventurero { criterioDeSeleccionDeEncuentros = unaFuncion . criterioDeSeleccionDeEncuentros $ unAventurero }
